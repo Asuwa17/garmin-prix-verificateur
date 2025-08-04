@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Garmin Fenix 7 Pro – Vérificateur</title>
+  <style>
+    body { font-family: sans-serif; padding: 1rem; }
+    button { padding: 0.8rem; font-size: 1.2rem; margin-bottom: 1rem; }
+    .result { margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <h1>Vérifier le prix (47 mm – ≤ 1100 $)</h1>
+  <button id="check">Vérifier prix Québec</button>
+  <div id="result" class="result"></div>
+
+  <script>
+    document.getElementById('check').onclick = async () => {
+      const res = document.getElementById('result');
+      res.textContent = 'Recherche…';
+
+      try {
+        const resp = await fetch('/api/check');
+        const data = await resp.json();
+
+        if (!Array.isArray(data) || data.length === 0) {
+          res.textContent = 'Aucune offre officielle ≤ 1100 $ trouvée.';
+        } else {
+          res.innerHTML = data.map(o => 
+            `<p>✅ ${o.name} : ${o.price.toFixed(2)} $ — 
+            <a href="${o.link}" target="_blank">Voir l’offre</a></p>`
+          ).join('');
+        }
+      } catch (e) {
+        res.textContent = 'Erreur lors de la vérification.';
+      }
+    };
+  </script>
+</body>
+</html>
