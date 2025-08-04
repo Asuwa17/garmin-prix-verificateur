@@ -1,5 +1,3 @@
-import fetch from 'node-fetch';
-
 export default async function handler(req, res) {
   const seuil = 1100;
   const url = 'https://api.allorigins.win/raw?url=https://www.bestbuy.ca/en-ca/product/garmin-fenix-7-pro-sapphire-solar-gps-smartwatch-47-mm-carbon-gray-titanium/17108629';
